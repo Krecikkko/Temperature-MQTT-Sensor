@@ -4,14 +4,18 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
+class ILogger;
+
 class TemperatureSensor {
 private:
     uint8_t pin;
 
     OneWire oneWire;
     DallasTemperature sensors;
+
+    ILogger* logger;
 public:
-    TemperatureSensor(uint8_t pin);
+    TemperatureSensor(uint8_t pin, ILogger* logger  = nullptr);
     void init();
     float read();
 };
