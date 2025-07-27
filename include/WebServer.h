@@ -4,15 +4,15 @@
 #include <ESP8266WebServer.h>
 
 class TemperatureSensor;
-class Logger;
+class ILogger;
 
 class WebServer {
 private:
     ESP8266WebServer server;
     TemperatureSensor* temperatureSensor;
-    Logger* logger;
+    ILogger* logger;
 public:
-    WebServer(TemperatureSensor* sensor, Logger* logger = nullptr);
+    WebServer(TemperatureSensor* sensor, ILogger* logger = nullptr);
     void begin();
     void handleClient();
 };

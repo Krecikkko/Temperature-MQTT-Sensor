@@ -6,7 +6,7 @@
 
 #define WEB_SERVER_PORT 80
 
-WebServer::WebServer(TemperatureSensor* sensor, Logger* logger) 
+WebServer::WebServer(TemperatureSensor* sensor, ILogger* logger) 
     : server(WEB_SERVER_PORT), temperatureSensor(sensor), logger(logger) {}
 
 void WebServer::begin() {
