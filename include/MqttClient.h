@@ -24,6 +24,7 @@ public:
     void init();
     void loop();
     void publish(const char* topic, const char* payload, bool retain = false);
+    bool isConnected();
 };
 
 #endif // MQTT_CLIENT_H

@@ -2,6 +2,8 @@
 #include "TemperatureSensor.h"
 #include "Logger.h"
 
+#include "html_page.h"
+
 #define WEB_SERVER_PORT 80
 
 WebServer::WebServer(TemperatureSensor* sensor, Logger* logger) 
@@ -9,10 +11,15 @@ WebServer::WebServer(TemperatureSensor* sensor, Logger* logger)
 
 void WebServer::begin() {
     server.on("/", [this]() {
+        server.send(200, "text/html", HTML_PAGE);
+        if (logger) logger->log("Served HTML page.");
+    });
+
+    server.on("/data", [this]() {
         float temp = temperatureSensor->read();
-        String html = "<html><body><h1>Temperature: " + String(temp) + " °C</h1></body></html>";
-        server.send(200, "text/html", html);
-        if (logger) logger->log("Server temperature web page.");
+        String json = "{\"temperature\": " + String(temp, 1) + "}";
+        server.send(200, "application/json", json);
+        if (logger) logger->log("Sent JSON data: " + json);
     });
 
     server.begin();

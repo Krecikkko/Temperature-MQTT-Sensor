@@ -39,3 +39,7 @@ void MqttClient::publish(const char* topic, const char* payload, bool retain) {
         logger->log("MQTT not connected. Cannot publish.");
     }
 }
+
+bool MqttClient::isConnected() {
+    return mqtt.connected();
+}
