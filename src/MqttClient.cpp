@@ -43,3 +43,10 @@ void MqttClient::publish(const char* topic, const char* payload, bool retain) {
 bool MqttClient::isConnected() {
     return mqtt.connected();
 }
+
+void MqttClient::onUpdate(const SensorEvent<float>& event) {
+    String topic = "sensor/" + event.sourceId;
+    String payload = String(event.value, 2);
+    
+    publish(topic.c_str(), payload.c_str(), true);
+}

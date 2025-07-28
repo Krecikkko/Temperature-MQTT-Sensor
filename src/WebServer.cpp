@@ -6,8 +6,8 @@
 
 #define WEB_SERVER_PORT 80
 
-WebServer::WebServer(TemperatureSensor* sensor, ILogger* logger) 
-    : server(WEB_SERVER_PORT), temperatureSensor(sensor), logger(logger) {}
+WebServer::WebServer(ILogger* logger) 
+    : server(WEB_SERVER_PORT), logger(logger) {}
 
 void WebServer::begin() {
     server.on("/", [this]() {
@@ -16,8 +16,7 @@ void WebServer::begin() {
     });
 
     server.on("/data", [this]() {
-        float temp = temperatureSensor->read();
-        String json = "{\"temperature\": " + String(temp, 1) + "}";
+        String json = "{\"temperature\": " + String(latestTemperature, 1) + "}";
         server.send(200, "application/json", json);
         if (logger) logger->log("Sent JSON data: " + json);
     });
@@ -28,4 +27,8 @@ void WebServer::begin() {
 
 void WebServer::handleClient() {
     server.handleClient();
+}
+
+void WebServer::onUpdate(const SensorEvent<float>& event) {
+    latestTemperature = event.value;
 }

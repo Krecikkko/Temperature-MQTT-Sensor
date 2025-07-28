@@ -25,7 +25,7 @@ A simple project for reading temperature data from a DS18B20 sensor and publishi
 
 1. Clone this repository:
     ```bash
-    git clone https://github.com/yourusername/Temperature-MQTT-Sensor.git
+    git clone https://github.com/Krecikkko/Temperature-MQTT-Sensor.git
     ```
 2. Open the project in your preferred IDE.
 3. Install required libraries (see `platformio.ini` or `lib_deps`).

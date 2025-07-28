@@ -23,7 +23,7 @@ Logger logger;
 Wifi wifi(wifi_ssid, wifi_pass, &logger);
 TemperatureSensor temperatureSensor(PIN_TEMP, &logger);
 MqttClient mqtt(mqtt_server, mqtt_port, "ESP8266-temp-sensor", mqtt_user, mqtt_password, &logger);
-WebServer web(&temperatureSensor, &logger);
+WebServer web(&logger);
 
 void setup() {
   logger.begin();
@@ -31,6 +31,9 @@ void setup() {
   temperatureSensor.init();
   mqtt.init();
   web.begin();
+
+  temperatureSensor.addObserver(&mqtt);
+  temperatureSensor.addObserver(&web);
 }
 
 void loop() {
@@ -43,9 +46,12 @@ void loop() {
 
   if (now - lastPublish > 5000) {
     lastPublish = now;
-
-    float temperature = temperatureSensor.read();
-    mqtt.publish("esp8266/temperature", String(temperature, 1).c_str());
+    /*
+      Temperature sensor reads temperature
+      and it notifies all the observers, by
+      innvoking notify() method.
+    */
+    temperatureSensor.notify();
   }
 
   // Send MQTT discovery config (once)
